@@ -1,7 +1,6 @@
 const postController = require('../controller/post.controller');
 
 async function routes(fastify, options) {
-
   fastify.post('/api/post', async (request, reply) => {
     const args = request.body;
     const newPost = await postController.createPost(args);

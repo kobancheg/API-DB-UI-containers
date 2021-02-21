@@ -5,7 +5,12 @@
     </div>
     <div class="bg-white p-2 border-2 border-gray-400 ">
       <div v-for="post in posts" :key="post.id">
-        <div class="mb-2">- <router-link :key="`/post/${post.id}`" :to="`/post/${post.id}`">{{ post.title }}</router-link></div>
+        <div class="mb-2">
+          -
+          <router-link :key="`/post/${post.id}`" :to="`/post/${post.id}`">{{
+            post.title
+          }}</router-link>
+        </div>
       </div>
     </div>
   </div>
@@ -20,7 +25,7 @@ export default {
   },
   methods: {
     fetchPosts() {
-      fetch("http://localhost:3000/api/post")
+      fetch("http://host.docker.internal:3000/api/post")
         .then(response => response.json())
         .then(data => (this.posts = data.slice(-10)));
     }

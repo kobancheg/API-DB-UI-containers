@@ -21,15 +21,28 @@ services:
 
     nodejs-api:
       build:
-        context: .
+        context: ./api
         dockerfile: Dockerfile
-      image: nodejs:alpine
       container_name: fastify-api
       restart: unless-stopped
       depends_on:
         - postgres-db
       ports:
         - "3000:3000"
+      restart: unless-stopped
+      networks:
+        - app-network
+
+    client:
+      build:
+        context: ./ui
+        dockerfile: Dockerfile
+      container_name: vue-ui
+      restart: unless-stopped
+      depends_on:
+        - nodejs-api
+      ports:
+        - "8080:8080"
       restart: unless-stopped
       networks:
         - app-network

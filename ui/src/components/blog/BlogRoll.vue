@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     fetchPosts() {
-      fetch("http://localhost:3000/api/post")
+      fetch("http://host.docker.internal:3000/api/post")
         .then(response => response.json())
         .then(data => (this.posts = data));
     }

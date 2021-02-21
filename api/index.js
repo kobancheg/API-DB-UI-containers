@@ -5,7 +5,7 @@ const HOST = '0.0.0.0';
 
 fastify.register(require('fastify-cors'), {
   origin: '*',
-  methods: ['GET', 'PUT', 'POST']
+  credentials: true
 })
 
 fastify.register(require('./routes/user.routes'));

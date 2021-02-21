@@ -18,11 +18,15 @@ export default {
   },
   methods: {
     fetchPost() {
-      fetch(`http://localhost:3000/api/post/${this.$route.params.id}`)
+      fetch(
+        `http://host.docker.internal:3000/api/post/${this.$route.params.id}`
+      )
         .then(response => response.json())
         .then(([data]) => (this.post = data))
         .then(() => {
-          fetch(`http://localhost:3000/api/user/${this.post.user_id}`)
+          fetch(
+            `http://host.docker.internal:3000/api/user/${this.post.user_id}`
+          )
             .then(response => response.json())
             .then(data => (this.user = data));
         });
