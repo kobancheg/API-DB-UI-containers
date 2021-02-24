@@ -25,7 +25,10 @@ export default {
   },
   methods: {
     fetchPosts() {
-      fetch("http://host.docker.internal:3000/api/post")
+      const apiUrl = process.env.VUE_APP_API_URL;
+      const apiPort = process.env.VUE_APP_API_PORT;
+
+      fetch(`http://${apiUrl}:${apiPort}/api/post`)
         .then(response => response.json())
         .then(data => (this.posts = data.slice(-10)));
     }

@@ -1,9 +1,11 @@
 const Pool = require('pg').Pool;
 
+const { DB_HOST } = process.env;
+
 const pool = new Pool({
   user: 'camopu',
   password: 'pgpassword',
-  host: 'host.docker.internal',
+  host: DB_HOST,
   port: 5432,
   database: 'fastify-db'
 })

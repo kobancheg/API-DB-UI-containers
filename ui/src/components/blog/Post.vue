@@ -18,15 +18,14 @@ export default {
   },
   methods: {
     fetchPost() {
-      fetch(
-        `http://host.docker.internal:3000/api/post/${this.$route.params.id}`
-      )
+      const apiUrl = process.env.VUE_APP_API_URL;
+      const apiPort = process.env.VUE_APP_API_PORT;
+
+      fetch(`http://${apiUrl}:${apiPort}/api/post/${this.$route.params.id}`)
         .then(response => response.json())
         .then(([data]) => (this.post = data))
         .then(() => {
-          fetch(
-            `http://host.docker.internal:3000/api/user/${this.post.user_id}`
-          )
+          fetch(`http://${apiUrl}:${apiPort}/api/user/${this.post.user_id}`)
             .then(response => response.json())
             .then(data => (this.user = data));
         });

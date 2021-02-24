@@ -1,55 +1,46 @@
-version: "3.9"
+version: '3.9'
 
 services:
-    postgres-db:
-      image: postgres:alpine
-      container_name: postgres-db
-      environment:
-        POSTGRES_USER: camopu
-        POSTGRES_PASSWORD: pgpassword
-        POSTGRES_DB: fastify-db
-      volumes:
-        - ./postgres/postgres.conf:/usr/local/etc/postgres/postgres.conf
-        - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
-        - ./database:/var/lib/postgresql/data
-      command: postgres -c config_file=/usr/local/etc/postgres/postgres.conf
-      ports:
-        - "5432:5432"
-      restart: unless-stopped
-      networks:
-        - app-network
+  postgres-db:
+    image: postgres:alpine
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: camopu
+      POSTGRES_PASSWORD: pgpassword
+      POSTGRES_DB: fastify-db
+    volumes:
+      - ./postgres/postgres.conf:/usr/local/etc/postgres/postgres.conf
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./database:/var/lib/postgresql/data
+    command: postgres -c config_file=/usr/local/etc/postgres/postgres.conf
+    ports:
+      - '5432:5432'
 
-    nodejs-api:
-      build:
-        context: ./api
-        dockerfile: Dockerfile
-      container_name: fastify-api
-      restart: unless-stopped
-      depends_on:
-        - postgres-db
-      ports:
-        - "3000:3000"
-      restart: unless-stopped
-      networks:
-        - app-network
+  nodejs-api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: fastify-api
+    restart: unless-stopped
+    depends_on:
+      - postgres-db
+    ports:
+      - '3000:3000'
+    environment:
+      DB_HOST: host.docker.internal
+      HOST: 0.0.0.0
+      PORT: 3000
 
-    client:
-      build:
-        context: ./ui
-        dockerfile: Dockerfile
-      container_name: vue-ui
-      restart: unless-stopped
-      depends_on:
-        - nodejs-api
-      ports:
-        - "8080:8080"
-      restart: unless-stopped
-      networks:
-        - app-network
+  client:
+    build:
+      context: ./ui
+      dockerfile: Dockerfile
+    container_name: vue-ui
+    restart: unless-stopped
+    depends_on:
+      - nodejs-api
+    ports:
+      - '8080:8080'
 
 volumes:
   database:
-
-networks:
-  app-network:
-    driver: bridge

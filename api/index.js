@@ -1,7 +1,6 @@
 const fastify = require('fastify')({ logger: true });
 
-const PORT = 3000;
-const HOST = '0.0.0.0';
+const {PORT, HOST} = process.env;
 
 fastify.register(require('fastify-cors'), {
   origin: '*',
