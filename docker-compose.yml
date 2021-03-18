@@ -4,6 +4,7 @@ services:
   postgres-db:
     image: postgres:alpine
     container_name: postgres-db
+    restart: unless-stopped
     environment:
       POSTGRES_USER: camopu
       POSTGRES_PASSWORD: pgpassword
@@ -30,6 +31,18 @@ services:
       DB_HOST: host.docker.internal
       HOST: 0.0.0.0
       PORT: 3000
+
+  nginx-proxy:
+    image: nginx:alpine
+    container_name: nginx-proxy
+    restart: unless-stopped
+    ports:
+      - '80:80'
+    volumes:
+      # - web-root:/var/www/html
+      - ./nginx-conf:/etc/nginx/conf.d
+    depends_on:
+      - nodejs-api
 
   client:
     build:
